@@ -101,7 +101,7 @@ public class UserInfoController extends BaseController {
 
 	@RequestMapping(value = "code1")
 	@ResponseBody     //加了这个注解，你返回的就不在是页面，而是一个对象？明白？嗯
-	public Msg code(String serial_number,String pspt_id,Model model) {
+	public Msg code(String serial_number,String pspt_id) {
 
 		//1、现在的请求不是到这了吗，接下来是不是应该由controller来调用service来，
 		//2、为什么要有service层，让controller简洁？controller层主要是核心控制层，用来控制请求的。
@@ -113,7 +113,7 @@ public class UserInfoController extends BaseController {
 		//那你刚刚和我说的找博客是这样的饿博客吗？
 		//是的好的
 
-		System.out.println("bvbkjsdvbdsv");
+
 		/**
 		 * 1、先去数据库判断这个用户是否存在
 		 *	这个明白吗OK

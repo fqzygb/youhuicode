@@ -57,6 +57,7 @@ public class CodeService extends CrudService<CodeDao, Code> {
 		return codeDao.getEntityByTag();
 	}
 
+	@Transactional(readOnly = false)
 	public void update(Code codeTag) {
 		codeDao.updateByEnty(codeTag);
 	}

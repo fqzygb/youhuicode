@@ -61,7 +61,7 @@ public class UserInfoService extends CrudService<UserInfoDao, UserInfo> {
 		return userInfoDao.getUserInfo(userInfo);
 	}
 
-
+	@Transactional(readOnly = false)
 	public void update(UserInfo info) {
 		userInfoDao.updateByEnty(info);
 	}

@@ -123,6 +123,11 @@
 		WHERE id = #{id}
 	</update>
 
+
+
+
+
+
 	<update id="delete">
 		UPDATE code SET
 			del_flag = #{DEL_FLAG_DELETE}
