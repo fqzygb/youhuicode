@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.youhuicode.dao.UserInfoDao">
+
+	<sql id="userInfoColumns">
+		a.id AS "id",
+		a.serial_number AS "serialNumber",
+		a.pspt_id AS "psptId",
+		a.tag AS "tag",
+		a.code AS "code",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="userInfoJoins">
+	</sql>
+
+	<select id="get" resultType="UserInfo">
+		SELECT
+		<include refid="userInfoColumns"/>
+		FROM user_info a
+		<include refid="userInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="UserInfo">
+		SELECT
+		<include refid="userInfoColumns"/>
+		FROM user_info a
+		<include refid="userInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="UserInfo">
+		SELECT
+		<include refid="userInfoColumns"/>
+		FROM user_info a
+		<include refid="userInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="getUserInfo" parameterType="UserInfo" resultType="UserInfo">
+		select * from user_info
+		where 1=1
+		<if test="serialNumber != null and serialNumber != ''">
+			and serial_number =#{serialNumber}
+		</if>
+		<if test="psptId != null and psptId != ''">
+			and pspt_id =#{psptId}
+		</if>
+		<if test="tag != null and tag != ''">
+			and tag =#{tag}
+		</if>
+		<if test="code != null and code != ''">
+			and code =#{code}
+		</if>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO user_info(
+			id,
+			serial_number,
+			pspt_id,
+			tag,
+			code,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{serialNumber},
+			#{psptId},
+			#{tag},
+			#{code},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE user_info SET
+			serial_number = #{serialNumber},
+			pspt_id = #{psptId},
+			tag = #{tag},
+			code = #{code},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateByEnty">
+		UPDATE user_info SET
+			serial_number = #{serialNumber},
+			pspt_id = #{psptId},
+			tag = #{tag},
+			code = #{code},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<!--	<update id="updateUserInfo">-->
+	<!--		UPDATE user_info SET-->
+	<!--			serial_number = #{serialNumber},-->
+	<!--			pspt_id = #{psptId},-->
+	<!--			tag = #{tag},-->
+	<!--			code = #{code},-->
+	<!--			update_by = #{updateBy.id},-->
+	<!--			update_date = #{updateDate},-->
+	<!--			remarks = #{remarks}-->
+	<!--		WHERE id = #{id}-->
+	<!--	</update>-->
+
+	<update id="delete">
+		UPDATE user_info SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>
