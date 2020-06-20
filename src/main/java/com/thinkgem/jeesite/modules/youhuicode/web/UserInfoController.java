@@ -30,6 +30,7 @@ import com.thinkgem.jeesite.modules.youhuicode.service.UserInfoService;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * 优惠码Controller
@@ -124,82 +125,87 @@ public class UserInfoController extends BaseController {
 		 * 1、先去数据库判断这个用户是否存在
 		 *	这个明白吗OK
 		 */
-		UserInfo userInfo = new UserInfo();
-		userInfo.setSerialNumber(serial_number);
-		userInfo.setPsptId(pspt_id);
-		UserInfo info = userInfoService.getUserInfo(userInfo);
-		Msg msg = new Msg();
+        Msg msg = null;
+        try{
+            UserInfo userInfo = new UserInfo();
+            userInfo.setSerialNumber(serial_number);
+            userInfo.setPsptId(pspt_id);
+            UserInfo info = userInfoService.getUserInfo(userInfo);
+            msg = new Msg();
+            Random random = new Random();
+            //String string = random.toString();
+            //现在开始写业务
+            /**
+             * 首先查询出结果了，为了安全起见，你不管他有没有查到结果，你都要去判断他是否为空
+             */
+            //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完
+            if(info != null){
+                ClickTime clickTime = new ClickTime();
+                String id = UUID.randomUUID().toString();
+                clickTime.setId(id);
+                clickTime.setSerialNumber(serial_number);
+                clickTime.setPsptId(pspt_id);
+                clickTime.setClicktime(new Date());
+                //clickTime.setId(random.toString());
+                if(clickTime != null){
+                    clickTimeService.insert(clickTime);
+                }
 
+                //接下来你去判断他的状态，你来写
+                //这样不是不为空了吗 然后你要判断什么就自己写
+                if(info.getTag().equals("0")){
+                    //这里你首先也要去数据库拿那个码，拿到之后判断是否为空，如果不为空，你才可以去修改那个状态。明白？OK
+                    Code code = codeService.getEntity();
+                    //Code code = codeService.get();
+                    Code codeTag = codeService.getEntityByTag();
+                    if(code != null){
+                        if(new Date().before(code.getStartDate())){
+                            //活动未开始
+                            msg.setFlg("3");
+                            msg.setMsgContent("活动未开始");
+                        }else{
+                            if((new Date()).after(code.getEndDate())){
+                                //活动已结束
+                                msg.setFlg("4");
+                                msg.setMsgContent("活动已结束");
+                            }else{
+                                if(codeTag != null){
+                                    //未领取
+                                    info.setTag("1");
+                                    info.setCode(codeTag.getCode());
+                                    codeTag.setTag("1");
+                                    userInfoService.update(info);
+                                    codeService.update(codeTag);
+                                    msg.setFlg("0");
+                                    msg.setMsgContent(codeTag.getCode());   //这里你也同样吧那个码传过去 明白？是的，刚才那里就是ajax的作用？
+                                }else{
+                                    //码已领完
+                                    msg.setFlg("5");
+                                    msg.setMsgContent("优惠码已领完");
+                                }
+                            }
+                        }
 
-		Random random = new Random();
-		//String string = random.toString();
+                    }
+                }else {
+                    //这里，领取过了之后，不是这样输出一句话，而是要讲内容显示到前台页面上。
+                    //所以我建议你再创建一个状态类，里边包含这么几个属性，1、状态值（0表示不成功，1表示成功）。2、内容（就是前台提示的内容）
+                    //你比如说，号码不是江门移动的，内容已经领取过了这样之类的。明白？OK先去创建一个类Msg
+                    msg.setFlg("1");
+                    msg.setMsgContent("您已经领取过了："+info.getCode());     // 这里你可以把他的那个码拿过来
 
-		ClickTime clickTime = new ClickTime();
-		clickTime.setSerialNumber(serial_number);
-		clickTime.setPsptId(pspt_id);
-		clickTime.setClicktime(new Date());
-		clickTime.setId(random.toString());
-		if(clickTime != null){
-			clickTimeService.insert(clickTime);
-			System.out.println("aaaaa");
-		}
+                }
+            }else{
+                msg.setFlg("2");
+                msg.setMsgContent("请您正确输入江门联通号码及开户证件号码");
+            }
+            return msg;  //最终你请求成功了，要给ajax一个答复，你成功了，就进到ajax那个success里面了，如果失败了，进的就是err那个里面噢噢
+        }catch (Exception e){
+            msg.setFlg("-1");
+            msg.setMsgContent("系统发生未知异常，请联系管理员");
+            return msg;
+        }
 
-
-		//现在开始写业务
-		/**
-		 * 首先查询出结果了，为了安全起见，你不管他有没有查到结果，你都要去判断他是否为空
-		 */
-		//flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完
-		if(info != null){
-			//接下来你去判断他的状态，你来写
-			//这样不是不为空了吗 然后你要判断什么就自己写
-			if(info.getTag().equals("0")){
-				//这里你首先也要去数据库拿那个码，拿到之后判断是否为空，如果不为空，你才可以去修改那个状态。明白？OK
-				Code code = codeService.getEntity();
-				//Code code = codeService.get();
-				Code codeTag = codeService.getEntityByTag();
-				if(code != null){
-					if(new Date().before(code.getStartDate())){
-						//活动未开始
-						msg.setFlg("3");
-						msg.setMsgContent("活动未开始");
-					}else{
-						if((new Date()).after(code.getEndDate())){
-							//活动已结束
-							msg.setFlg("4");
-							msg.setMsgContent("活动已结束");
-						}else{
-							if(codeTag != null){
-								//未领取
-								info.setTag("1");
-								info.setCode(codeTag.getCode());
-								codeTag.setTag("1");
-								userInfoService.update(info);
-								codeService.update(codeTag);
-								msg.setFlg("0");
-								msg.setMsgContent(codeTag.getCode());   //这里你也同样吧那个码传过去 明白？是的，刚才那里就是ajax的作用？
-							}else{
-								//码已领完
-								msg.setFlg("5");
-								msg.setMsgContent("优惠码已领完");
-							}
-						}
-					}
-
-				}
-			}else {
-				//这里，领取过了之后，不是这样输出一句话，而是要讲内容显示到前台页面上。
-				//所以我建议你再创建一个状态类，里边包含这么几个属性，1、状态值（0表示不成功，1表示成功）。2、内容（就是前台提示的内容）
-				//你比如说，号码不是江门移动的，内容已经领取过了这样之类的。明白？OK先去创建一个类Msg
-				msg.setFlg("1");
-				msg.setMsgContent("您已经领取过了："+info.getCode());     // 这里你可以把他的那个码拿过来
-
-			}
-		}else{
-			msg.setFlg("2");
-			msg.setMsgContent("请您正确输入江门联通号码及开户证件号码");
-		}
-		return msg;  //最终你请求成功了，要给ajax一个答复，你成功了，就进到ajax那个success里面了，如果失败了，进的就是err那个里面噢噢
 	}
 
 
