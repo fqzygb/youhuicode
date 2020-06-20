@@ -75,6 +75,25 @@
 				//那前面那些正则表达式的提示还要吗？要啊，那个直接就是，这个是后台处理之后？我先打个电话
 				//就和你
 
+				if(flg === "0"){
+					alert("您的优惠码为："+msgContent)
+				}
+				if(flg === '1'){
+					alert(msgContent)
+				}
+				if(flg === '2'){
+					alert(msgContent)
+				}
+				if(flg === '3'){
+					alert(msgContent)
+				}
+				if(flg === '4'){
+					alert(msgContent)
+				}
+				if(flg === '5'){
+					alert(msgContent)
+				}
+
 			}
 		})
 

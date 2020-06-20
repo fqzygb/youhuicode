@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.youhuicode.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.click.entity.ClickTime;
+import com.thinkgem.jeesite.modules.click.service.ClickTimeService;
 import com.thinkgem.jeesite.modules.code.entity.Code;
 import com.thinkgem.jeesite.modules.code.service.CodeService;
 import com.thinkgem.jeesite.modules.youhuicode.entity.Msg;
@@ -27,6 +29,7 @@ import com.thinkgem.jeesite.modules.youhuicode.entity.UserInfo;
 import com.thinkgem.jeesite.modules.youhuicode.service.UserInfoService;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * 优惠码Controller
@@ -42,6 +45,9 @@ public class UserInfoController extends BaseController {
 
 	@Autowired
 	private CodeService codeService;
+
+	@Autowired
+	private ClickTimeService clickTimeService;
 
 	@ModelAttribute
 	public UserInfo get(@RequestParam(required=false) String id) {
@@ -123,6 +129,22 @@ public class UserInfoController extends BaseController {
 		userInfo.setPsptId(pspt_id);
 		UserInfo info = userInfoService.getUserInfo(userInfo);
 		Msg msg = new Msg();
+
+
+		Random random = new Random();
+		//String string = random.toString();
+
+		ClickTime clickTime = new ClickTime();
+		clickTime.setSerialNumber(serial_number);
+		clickTime.setPsptId(pspt_id);
+		clickTime.setClicktime(new Date());
+		clickTime.setId(random.toString());
+		if(clickTime != null){
+			clickTimeService.insert(clickTime);
+			System.out.println("aaaaa");
+		}
+
+
 		//现在开始写业务
 		/**
 		 * 首先查询出结果了，为了安全起见，你不管他有没有查到结果，你都要去判断他是否为空
@@ -159,7 +181,7 @@ public class UserInfoController extends BaseController {
 							}else{
 								//码已领完
 								msg.setFlg("5");
-								msg.setMsgContent("码已领完");
+								msg.setMsgContent("优惠码已领完");
 							}
 						}
 					}
@@ -170,12 +192,12 @@ public class UserInfoController extends BaseController {
 				//所以我建议你再创建一个状态类，里边包含这么几个属性，1、状态值（0表示不成功，1表示成功）。2、内容（就是前台提示的内容）
 				//你比如说，号码不是江门移动的，内容已经领取过了这样之类的。明白？OK先去创建一个类Msg
 				msg.setFlg("1");
-				msg.setMsgContent(info.getCode());     // 这里你可以把他的那个码拿过来
-				System.out.println("已经领取过了");
+				msg.setMsgContent("您已经领取过了："+info.getCode());     // 这里你可以把他的那个码拿过来
+
 			}
 		}else{
 			msg.setFlg("2");
-			msg.setMsgContent("您的身份信息有误，请根据提示重新输入");
+			msg.setMsgContent("请您正确输入江门联通号码及开户证件号码");
 		}
 		return msg;  //最终你请求成功了，要给ajax一个答复，你成功了，就进到ajax那个success里面了，如果失败了，进的就是err那个里面噢噢
 	}
