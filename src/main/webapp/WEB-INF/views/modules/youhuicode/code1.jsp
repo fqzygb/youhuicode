@@ -4,15 +4,17 @@
 <head>
 	<title>领取优惠码管理</title>
 	<meta name="decorator" content="default"/>
-	<meta name="viewport" content="width=device-width; initial-scale=1.4; minimum-scale=1.0; maximum-scale=2.0"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.4, minimum-scale=1.0, maximum-scale=2.0"/>
 	<script type="text/javascript">
 
 	</script>
 </head>
 <body>
 
+
 <!-- <form id="form" action="" method="post"> -->
-<div class="aui-ver-form" align="center" >
+
+<div class="aui-ver-form" align="center"  style="background: url(${ctxStatic}/static/images/success.jpg);background-size:100% 100%;height:600px;" >
 	<h2>领取优惠码</h2>
 	<div class="aui-flex" align="center">
 		<div class="aui-flex-box" >
