@@ -127,29 +127,36 @@ public class UserInfoController extends BaseController {
 		 */
         Msg msg = null;
         try{
+        	//这里很本来是拿着页面的那两个数据去查询数据库的，拿你这里new一个date，有什么意义
+			//haode你改吧
+
             UserInfo userInfo = new UserInfo();
             userInfo.setSerialNumber(serial_number);
             userInfo.setPsptId(pspt_id);
+
             UserInfo info = userInfoService.getUserInfo(userInfo);
             msg = new Msg();
             Random random = new Random();
             //String string = random.toString();
-            //现在开始写业务
+
+
+			ClickTime clickTime = new ClickTime();
+			String id = UUID.randomUUID().toString();
+			clickTime.setId(id);
+			clickTime.setSerialNumber(serial_number);
+			clickTime.setPsptId(pspt_id);
+			clickTime.setClicktime(new Date());
+			//clickTime.setId(random.toString());
+			if(clickTime != null){
+				clickTimeService.insert(clickTime);
+			}
+
+			//现在开始写业务
             /**
              * 首先查询出结果了，为了安全起见，你不管他有没有查到结果，你都要去判断他是否为空
              */
             //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完
             if(info != null){
-                ClickTime clickTime = new ClickTime();
-                String id = UUID.randomUUID().toString();
-                clickTime.setId(id);
-                clickTime.setSerialNumber(serial_number);
-                clickTime.setPsptId(pspt_id);
-                clickTime.setClicktime(new Date());
-                //clickTime.setId(random.toString());
-                if(clickTime != null){
-                    clickTimeService.insert(clickTime);
-                }
 
                 //接下来你去判断他的状态，你来写
                 //这样不是不为空了吗 然后你要判断什么就自己写
@@ -173,6 +180,8 @@ public class UserInfoController extends BaseController {
                                     //未领取
                                     info.setTag("1");
                                     info.setCode(codeTag.getCode());
+									//
+									info.setReceiveTime(new Date());
                                     codeTag.setTag("1");
                                     userInfoService.update(info);
                                     codeService.update(codeTag);

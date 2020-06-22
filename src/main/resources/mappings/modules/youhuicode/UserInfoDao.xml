@@ -13,7 +13,8 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		a.receiveTime AS "receiveTime"
 	</sql>
 
 	<sql id="userInfoJoins">
@@ -78,6 +79,9 @@
 		<if test="code != null and code != ''">
 			and code =#{code}
 		</if>
+		<if test="receiveTime != null and receiveTime != ''">
+			and receiveTime =#{receiveTime}
+		</if>
 	</select>
 
 	<insert id="insert">
@@ -92,7 +96,8 @@
 			update_by,
 			update_date,
 			remarks,
-			del_flag
+			del_flag,
+			receiveTime
 		) VALUES (
 			#{id},
 			#{serialNumber},
@@ -104,7 +109,8 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag}
+			#{delFlag},
+			#{receiveTime}
 		)
 	</insert>
 
@@ -116,7 +122,9 @@
 			code = #{code},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			receiveTime = #{receiveTime}
+
 		WHERE id = #{id}
 	</update>
 
@@ -128,7 +136,8 @@
 			code = #{code},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			receiveTime =#{receiveTime}
 		WHERE id = #{id}
 	</update>
 

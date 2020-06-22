@@ -14,7 +14,7 @@
 
 <!-- <form id="form" action="" method="post"> -->
 
-<div class="aui-ver-form" align="center"  style="background: url(${ctxStatic}/static/images/success.jpg);background-size:100% 100%;height:600px;" >
+<div class="aui-ver-form" align="center"  style="background: url(${ctx}/static/images/success.jpg);background-size:100% 100%;height:600px;" >
 	<h2>领取优惠码</h2>
 	<div class="aui-flex" align="center">
 		<div class="aui-flex-box" >
@@ -54,7 +54,7 @@
 		//alert(pspt_id);
 		var reg =/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
 		if(!reg.test(pspt_id)){
-			alert("身份证号码有误，请重填");
+			alert("18位身份证号码有误，请重填");
 			return false;
 		}
 

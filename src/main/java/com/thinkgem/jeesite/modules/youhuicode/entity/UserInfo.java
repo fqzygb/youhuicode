@@ -7,19 +7,34 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.util.Date;
+
 /**
  * 优惠码Entity
  * @author 冯琪增
  * @version 2020-06-19
  */
 public class UserInfo extends DataEntity<UserInfo> {
-	
+
 	private static final long serialVersionUID = 1L;
 	private String serialNumber;		// serial_number
 	private String psptId;		// pspt_id
 	private String tag;		// 0未领取
 	private String code;		// 兑换码
-	
+	private Date receiveTime;		// receiveTime
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public Date getReceiveTime() {
+		return receiveTime;
+	}
+
+	public void setReceiveTime(Date receiveTime) {
+		this.receiveTime = receiveTime;
+	}
+
 	public UserInfo() {
 		super();
 	}
@@ -36,7 +51,7 @@ public class UserInfo extends DataEntity<UserInfo> {
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
-	
+
 	@Length(min=0, max=128, message="pspt_id长度必须介于 0 和 128 之间")
 	public String getPsptId() {
 		return psptId;
@@ -45,7 +60,7 @@ public class UserInfo extends DataEntity<UserInfo> {
 	public void setPsptId(String psptId) {
 		this.psptId = psptId;
 	}
-	
+
 	@Length(min=1, max=1, message="0未领取长度必须介于 1 和 1 之间")
 	public String getTag() {
 		return tag;
@@ -54,7 +69,7 @@ public class UserInfo extends DataEntity<UserInfo> {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-	
+
 	@Length(min=0, max=64, message="兑换码长度必须介于 0 和 64 之间")
 	public String getCode() {
 		return code;
@@ -63,5 +78,5 @@ public class UserInfo extends DataEntity<UserInfo> {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
 }
