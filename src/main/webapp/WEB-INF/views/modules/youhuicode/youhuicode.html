@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.3, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <title>领取优惠码</title>
+    <script src="${rc.contextPath}/static/jquery/jquery-1.8.3.js"></script>
+
+</head>
+<body >
+
+<div class="aui-ver-form" align="center"  style="background-image: url(${rc.contextPath}/static/images/success.jpg) ;background-size: cover ;width:300px;height:550px;position:relative" >
+    <div class="aui-flex" align="center" style="position:absolute; top: 180px;" >
+        <div class="aui-flex-box" >
+            <label class="control-label" style="color: blue">手机号码：</label>
+            <input id="serial_number" type="text" autocomplete="off" placeholder="江门联通手机号码" style="width: 160px"/>
+        </div>
+    </div>
+    <div class="aui-flex" align="center" style="position:absolute; top: 210px;">
+    <div class="aui-flex-box">
+            <label class="control-label" style="color: blue">证件号码：</label>
+            <input id="pspt_id" type="text" autocomplete="off" placeholder="开户身份证号码" style="width: 160px" />
+        </div>
+    </div>
+
+    <div class="aui-ver-button" align="center" style="position:absolute; top: 240px; left: 120px">
+        <button id="btn" style="color:blue;text-align:center ">领取</button>
+    </div>
+
+    <div id="msgContent" style="position:absolute; top: 270px;">
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $("#btn").click(function () {
+        //console.log("aaaaaaaaa");
+        //alert("bbbbbbbb");
+
+        var serial_number = $("#serial_number").val();
+        var pspt_id = $("#pspt_id").val();
+        //alert(serial_number);
+        //alert(pspt_id);
+        var reg =/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+        if(!(/^[1][3|4|5|6|7|8|9][0-9]{9}$/.test(serial_number))) {
+            alert("手机号码有误，请重填");
+            return false;
+        }
+        if(!reg.test(pspt_id)){
+            alert("18位身份证号码有误，请重填");
+            return false;
+        }
+
+        $.ajax({
+            type:"POST",
+            dateType:"JSON",
+            url:"${rc.contextPath}/a/youhuicode/userInfo/code1",
+            data:{
+                "serial_number":serial_number,
+                "pspt_id":pspt_id,
+                //"type":type
+            },
+            //contentType: "application/json;charset=UTF-8",
+            success:function(data){
+                //这里的data，就是你重后台传来的那个对象，根据这个对象的那个flg，你就能判断到底是哪种情况了msg?是的好的，
+                console.log(data);
+                var flg =  data.flg;
+                var msgContent = data.msgContent;
+                console.log(flg);
+                console.log(msgContent);
+                //这里不就拿到了那个状态值和那个码了吗，然后根据那个状态值，去判断，根据不同的状态给出不同的提示。
+                //那前面那些正则表达式的提示还要吗？要啊，那个直接就是，这个是后台处理之后？我先打个电话
+                //就和你
+
+
+                var html = "";
+                html +="<span  style=\"color:red;font-size: 20px\">"+msgContent+"</span>"
+                $("#msgContent").html(html);  //在html页面id=msgContent的标签里显示html内容
+
+                //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完
+                if(flg === "0"){
+                    alert("领取成功,您的优惠码为："+msgContent)
+                }
+                if(flg === '1'){
+                    alert(msgContent)
+                }
+                if(flg === '2'){
+                    alert(msgContent)
+                }
+                if(flg === '3'){
+                    alert(msgContent)
+                }
+                if(flg === '4'){
+                    alert(msgContent)
+                }
+                if(flg === '5'){
+                    alert(msgContent)
+                }
+                if(flg === '-1'){
+                    alert(msgContent)
+                }
+
+            }
+        })
+
+    })
+
+</script>
+</body>
+</body>
+</html>

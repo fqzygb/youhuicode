@@ -103,12 +103,13 @@ public class UserInfoController extends BaseController {
 		model.addAttribute("serialName",userInfo.getSerialNumber());
 		model.addAttribute("psptId",userInfo.getPsptId());
 
-		return "modules/youhuicode/code1";
+		//return "modules/youhuicode/code1";
+		return "modules/youhuicode/youhuicode.html";
 	}
 
 	@RequestMapping(value = "code1")
 	@ResponseBody     //加了这个注解，你返回的就不在是页面，而是一个对象？明白？嗯
-	public Msg code(String serial_number,String pspt_id) {
+	public Msg code(String serial_number,String pspt_id,Model model) {
 
 		//1、现在的请求不是到这了吗，接下来是不是应该由controller来调用service来，
 		//2、为什么要有service层，让controller简洁？controller层主要是核心控制层，用来控制请求的。
@@ -184,9 +185,11 @@ public class UserInfoController extends BaseController {
 									info.setReceiveTime(new Date());
                                     codeTag.setTag("1");
                                     userInfoService.update(info);
+									//userInfoService.save(info);
                                     codeService.update(codeTag);
                                     msg.setFlg("0");
                                     msg.setMsgContent(codeTag.getCode());   //这里你也同样吧那个码传过去 明白？是的，刚才那里就是ajax的作用？
+									//model.addAttribute("msg",msg);
                                 }else{
                                     //码已领完
                                     msg.setFlg("5");
