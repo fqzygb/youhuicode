@@ -152,30 +152,35 @@ public class UserInfoController extends BaseController {
 				clickTimeService.insert(clickTime);
 			}
 
-			//现在开始写业务
+			//写业务
             /**
-             * 首先查询出结果了，为了安全起见，你不管他有没有查到结果，你都要去判断他是否为空
+             * 为了安全起见，不管他有没有查到结果，判断他是否为空
              */
-            //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完
+            //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完,6 其他情况
             if(info != null){
 
-                //接下来你去判断他的状态，你来写
+                //接下来你去判断他的状态
                 //这样不是不为空了吗 然后你要判断什么就自己写
-                if(info.getTag().equals("0")){
+                if(info.getTag().equals("0") || info.getTag().equals("")||info.getTag()==null){
                     //这里你首先也要去数据库拿那个码，拿到之后判断是否为空，如果不为空，你才可以去修改那个状态。明白？OK
-                    Code code = codeService.getEntity();
+                    //Code code = codeService.getEntity();
                     //Code code = codeService.get();
                     Code codeTag = codeService.getEntityByTag();
-                    if(code != null){
-                        if(new Date().before(code.getStartDate())){
+                    if(codeTag != null){
+                        //if(new Date().before(code.getStartDate()))
+                        if (codeTag.getStartDate().after(new Date()))
+
+                        {
                             //活动未开始
                             msg.setFlg("3");
-                            msg.setMsgContent("活动未开始");
+                            msg.setMsgContent("活动还未开始,敬请期待");
                         }else{
-                            if((new Date()).after(code.getEndDate())){
+                           // if((new Date()).after(code.getEndDate()))
+                        if (codeTag.getEndDate().before(new Date()))
+                            {
                                 //活动已结束
                                 msg.setFlg("4");
-                                msg.setMsgContent("活动已结束");
+                                msg.setMsgContent("活动已经结束，感谢支持");
                             }else{
                                 if(codeTag != null){
                                     //未领取
@@ -188,17 +193,21 @@ public class UserInfoController extends BaseController {
 									//userInfoService.save(info);
                                     codeService.update(codeTag);
                                     msg.setFlg("0");
-                                    msg.setMsgContent(codeTag.getCode());   //这里你也同样吧那个码传过去 明白？是的，刚才那里就是ajax的作用？
+                                    msg.setMsgContent("您的优惠码是："+codeTag.getCode());   //这里你也同样吧那个码传过去 明白？是的，刚才那里就是ajax的作用？
 									//model.addAttribute("msg",msg);
                                 }else{
                                     //码已领完
                                     msg.setFlg("5");
-                                    msg.setMsgContent("优惠码已领完");
+                                    msg.setMsgContent("您来晚啦，优惠码已领完");
                                 }
                             }
                         }
 
-                    }
+                    }else {
+						//其他情况
+						msg.setFlg("6");
+						msg.setMsgContent("活动在筹备中，敬请期待");
+					}
                 }else {
                     //这里，领取过了之后，不是这样输出一句话，而是要讲内容显示到前台页面上。
                     //所以我建议你再创建一个状态类，里边包含这么几个属性，1、状态值（0表示不成功，1表示成功）。2、内容（就是前台提示的内容）
@@ -209,12 +218,12 @@ public class UserInfoController extends BaseController {
                 }
             }else{
                 msg.setFlg("2");
-                msg.setMsgContent("请您正确输入江门联通号码及开户证件号码");
+                msg.setMsgContent("手机号码或证件号码错误");
             }
             return msg;  //最终你请求成功了，要给ajax一个答复，你成功了，就进到ajax那个success里面了，如果失败了，进的就是err那个里面噢噢
         }catch (Exception e){
             msg.setFlg("-1");
-            msg.setMsgContent("系统发生未知异常，请联系管理员");
+            msg.setMsgContent("网络异常，请您稍后重试");
             return msg;
         }
 
