@@ -104,15 +104,14 @@ body {
             },
             //contentType: "application/json;charset=UTF-8",
             success:function(data){
-                //这里的data，就是你重后台传来的那个对象，根据这个对象的那个flg，你就能判断到底是哪种情况了msg?是的好的，
+                //这里的data，就是重后台传来的那个对象，根据这个对象的那个flg，就能判断到底是哪种情况了
                 console.log(data);
                 var flg =  data.flg;
                 var msgContent = data.msgContent;
                 console.log(flg);
                 console.log(msgContent);
-                //这里不就拿到了那个状态值和那个码了吗，然后根据那个状态值，去判断，根据不同的状态给出不同的提示。
-                //那前面那些正则表达式的提示还要吗？要啊，那个直接就是，这个是后台处理之后？我先打个电话
-                //就和你
+                //拿到了那个状态值和那个码了，然后根据那个状态值，去判断，根据不同的状态给出不同的提示。
+
 
 
                 var html = "";

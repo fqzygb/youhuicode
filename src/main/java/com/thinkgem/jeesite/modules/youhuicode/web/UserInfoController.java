@@ -108,28 +108,26 @@ public class UserInfoController extends BaseController {
 	}
 
 	@RequestMapping(value = "code1")
-	@ResponseBody     //加了这个注解，你返回的就不在是页面，而是一个对象？明白？嗯
+	@ResponseBody     //返回的不是页面，而是一个对象
 	public Msg code(String serial_number,String pspt_id,Model model) {
 
-		//1、现在的请求不是到这了吗，接下来是不是应该由controller来调用service来，
-		//2、为什么要有service层，让controller简洁？controller层主要是核心控制层，用来控制请求的。
-		// 那操作让其他来？   你的请求过来肯定是要处理业务逻辑的，是不是。是的
-		//所以说要在service层进行处理业务逻辑 明白。
-		//所以说接下来就要去调用service层，在service层中，你可以加入你的业务逻辑，判断。
-		//最后是在dao层。dao层主要是用来操作数据库的，明白？明白
-		//然后就是在controller调用service，是的。
-		//那你刚刚和我说的找博客是这样的饿博客吗？
-		//是的好的
+		//由controller来调用service
+		//controller层主要是核心控制层，用来控制请求的。
+
+		//service层进行处理业务逻辑
+		//在service层中，加入业务逻辑，判断。
+		//dao层主要是用来操作数据库的
+		//然在controller调用service。
+
+
 
 
 		/**
 		 * 1、先去数据库判断这个用户是否存在
-		 *	这个明白吗OK
+		 *
 		 */
         Msg msg = null;
         try{
-        	//这里很本来是拿着页面的那两个数据去查询数据库的，拿你这里new一个date，有什么意义
-			//haode你改吧
 
             UserInfo userInfo = new UserInfo();
             userInfo.setSerialNumber(serial_number);
@@ -154,15 +152,15 @@ public class UserInfoController extends BaseController {
 
 			//写业务
             /**
-             * 为了安全起见，不管他有没有查到结果，判断他是否为空
+             * 为了安全起见，不管它有没有查到结果，判断它是否为空
              */
             //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完,6 其他情况
             if(info != null){
 
-                //接下来你去判断他的状态
-                //这样不是不为空了吗 然后你要判断什么就自己写
+                //判断他的状态
+
                 if(info.getTag().equals("0") || info.getTag().equals("")||info.getTag()==null){
-                    //这里你首先也要去数据库拿那个码，拿到之后判断是否为空，如果不为空，你才可以去修改那个状态。明白？OK
+                    //去数据库拿那个码，拿到之后判断是否为空，如果不为空，才可以去修改那个状态
                     //Code code = codeService.getEntity();
                     //Code code = codeService.get();
                     Code codeTag = codeService.getEntityByTag();
@@ -193,7 +191,7 @@ public class UserInfoController extends BaseController {
 									//userInfoService.save(info);
                                     codeService.update(codeTag);
                                     msg.setFlg("0");
-                                    msg.setMsgContent("您的优惠码是："+codeTag.getCode());   //这里你也同样吧那个码传过去 明白？是的，刚才那里就是ajax的作用？
+                                    msg.setMsgContent("您的优惠码是："+codeTag.getCode());   //码传过去 是ajax的作用
 									//model.addAttribute("msg",msg);
                                 }else{
                                     //码已领完
@@ -209,18 +207,18 @@ public class UserInfoController extends BaseController {
 						msg.setMsgContent("活动在筹备中，敬请期待");
 					}
                 }else {
-                    //这里，领取过了之后，不是这样输出一句话，而是要讲内容显示到前台页面上。
-                    //所以我建议你再创建一个状态类，里边包含这么几个属性，1、状态值（0表示不成功，1表示成功）。2、内容（就是前台提示的内容）
-                    //你比如说，号码不是江门移动的，内容已经领取过了这样之类的。明白？OK先去创建一个类Msg
+                    //领取过了输出一句话，要讲内容显示到前台页面上。
+                    //创建一个状态类，里边包含这么几个属性，1、状态值（0表示不成功，1表示成功）。2、内容（就是前台提示的内容）
+
                     msg.setFlg("1");
-                    msg.setMsgContent("您已经领取过了："+info.getCode());     // 这里你可以把他的那个码拿过来
+                    msg.setMsgContent("您已经领取过了："+info.getCode());     // 把码拿过来
 
                 }
             }else{
                 msg.setFlg("2");
                 msg.setMsgContent("手机号码或证件号码错误");
             }
-            return msg;  //最终你请求成功了，要给ajax一个答复，你成功了，就进到ajax那个success里面了，如果失败了，进的就是err那个里面噢噢
+            return msg;  //请求成功了，要给ajax一个答复，成功了，就进到ajax那个success里面了，如果失败了，进的就是err那个里面
         }catch (Exception e){
             msg.setFlg("-1");
             msg.setMsgContent("网络异常，请您稍后重试");
