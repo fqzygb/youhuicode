@@ -55,8 +55,7 @@ public class UserInfoService extends CrudService<UserInfoDao, UserInfo> {
 //	}
 
 
-	//去获取当前用户的信息，明白吗OK ，但是怎么爆红
-	//那是因为你现在还没有这个方法OK
+	//去获取当前用户的信息
 	public UserInfo getUserInfo(UserInfo userInfo) {
 		return userInfoDao.getUserInfo(userInfo);
 	}

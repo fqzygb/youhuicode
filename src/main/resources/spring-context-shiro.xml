@@ -25,6 +25,10 @@
 				${adminPath}/cas = cas
 				${adminPath}/youhuicode/userInfo/search = anon
 				${adminPath}/youhuicode/userInfo/code1 = anon
+				${adminPath}/youhuicode/userInfo/getduihuan = anon
+				${adminPath}/youhuicode/userInfo/getshow = anon
+				${adminPath}/youhuicode/userInfo/getpicture = anon
+				${adminPath}/youhuicode/userInfo/getpicturePC = anon
 				${adminPath}/login = authc
 				${adminPath}/logout = logout
 				${adminPath}/** = user

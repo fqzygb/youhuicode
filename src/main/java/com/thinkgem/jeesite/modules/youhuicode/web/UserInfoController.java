@@ -97,11 +97,38 @@ public class UserInfoController extends BaseController {
 	}
 
 
+	@RequestMapping(value = "getshow")
+	public String getshow() {
+		//return "modules/youhuicode/code1";
+		return "modules/youhuicode/show.html";
+	}
+
+
+
+	@RequestMapping(value = "getpicture")
+	public String getpicture() {
+		//return "modules/youhuicode/code1";
+		return "modules/youhuicode/picture.html";
+	}
+
+
+	@RequestMapping(value = "getpicturePC")
+	public String getpicturePC() {
+		//return "modules/youhuicode/code1";
+		return "modules/youhuicode/picturePC.html";
+	}
+
+
+
+	@RequestMapping(value = "getduihuan")
+	public String getduihuan() {
+		//return "modules/youhuicode/code1";
+		return "modules/youhuicode/duihuanliucheng.html";
+	}
+
 
 	@RequestMapping(value = "search")
 	public String get(UserInfo userInfo,Model model) {
-		model.addAttribute("serialName",userInfo.getSerialNumber());
-		model.addAttribute("psptId",userInfo.getPsptId());
 
 		//return "modules/youhuicode/code1";
 		return "modules/youhuicode/youhuicode.html";

@@ -15,7 +15,7 @@ import com.thinkgem.jeesite.modules.youhuicode.entity.UserInfo;
 @MyBatisDao
 public interface UserInfoDao extends CrudDao<UserInfo> {
 
-    //获取当前用户的信息 明白哦？OK
+    //获取当前用户的信息
     //然后去编写mapper文件，
     UserInfo getUserInfo(UserInfo userInfo);
 

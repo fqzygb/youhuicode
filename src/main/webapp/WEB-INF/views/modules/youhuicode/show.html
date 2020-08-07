@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
     <title>领取优惠码</title>
     <script src="${rc.contextPath}/static/jquery/jquery-1.8.3.js"></script>
@@ -12,6 +13,7 @@
             overflow-x:hidden;
             overflow-y: hidden;
             width:100%;
+            min-height: 100%;
         }
 
 
@@ -32,19 +34,22 @@ body {
 
 本文地址：http://liuyanzhao.com/3580.html
         */
-    /*   html{
-           height: 100%;
-           display: table;
+        /*   html{
+               height: 100%;
+               display: table;
 
-       }*/
+           }*/
     </style>
 
-
 </head>
-<body >
+<body>
 
 
-<div class="aui-ver-form"  style="background-image: url(${rc.contextPath}/static/images/success.jpg) ;background-size: 100% 100%;width:100%;height:620px;position:relative;box-sizing:border-box;overflow: hidden;background-repeat: no-repeat" >
+
+<div id="div1" style="background-image: url(${rc.contextPath}/static/images/success.jpg) ;background-size: 100% 100%;width:100%;height:620px;position:relative;box-sizing:border-box;overflow: hidden;background-repeat: no-repeat
+    ;display:block;">
+
+
 
     <div class="aui-flex" align="center" style="position:absolute; top: 260px;left: 30px;" >
         <div class="aui-flex-box" >
@@ -52,18 +57,18 @@ body {
             <input id="serial_number" type="text" autocomplete="off" placeholder="江门联通手机号码" style="width:200px;height:30px"/>
         </div>
     </div>
-    <div class="aui-flex" align="center" style="position:absolute; top: 320px;left: 30px;">
+    <div class="aui-flex" align="center" style="position:absolute; top: 310px;left: 30px;">
         <div class="aui-flex-box">
             <label class="control-label" style="color: white;font-size: larger"><b>证件号码：</b></label>
             <input id="pspt_id" type="text" autocomplete="off" placeholder="开户身份证号码" style="width:200px;height:30px" />
         </div>
     </div>
 
-    <div class="aui-ver-button" align="center" style="position:relative; top: 380px;">
+    <div class="aui-ver-button" align="center" style="position:relative; top: 360px;">
         <button id="btn" style="color:green;text-align:center;width: 60px;height: 30px ">领取</button>
     </div>
 
-    <div id="msgContent" style="text-align: center;position:relative; top: 390px;">
+    <div id="msgContent" style="text-align: center;position:relative; top: 375px;">
 
     </div>
 
@@ -72,22 +77,78 @@ body {
          <a align="center" style="color:orange;text-align:center;font-size: 42px"   href="${rc.contextPath}/a/youhuicode/userInfo/getduihuan">兑换流程</a>
      </div>-->
 
-    <div class="aui-ver-button" align="center" style="position:relative; top: 460px;">
+   <!-- <div class="aui-ver-button" align="center" style="position:relative; top: 460px;">
         <button onclick="duihuan()" style="color:orange;text-align:center;width: 120px;height: 40px;font-size: larger">兑换流程</button>
+    </div>
+-->
+
+    <div class="aui-ver-button" align="center" style="position:relative; top: 440px;">
+        <button type="button" id="showHidden" style="color:orange;text-align:center;width: 120px;height: 40px;font-size: larger">兑换流程</button>
     </div>
 
 
+</div>
+
+<div id="div2" style="background-image: url(${rc.contextPath}/static/images/duihuan.jpg) ;background-size: 100% 100%;width:100%;height:620px;position:relative;box-sizing:border-box;overflow: hidden;background-repeat: no-repeat
+;display:none">
+    <div class="aui-ver-button" align="center" style="position:relative; top: 510px">
+        <button type="button" id="showHidden2" style="color:orange;text-align:center;width: 120px;height: 40px;font-size: larger">领取优惠码</button>
+    </div>
+
 
 </div>
 
+<script type='text/javascript'>
+
+    function show_hidden(obj) {
+
+        if(obj.style.display === 'block') {
+
+            obj.style.display = 'none';
+
+        } else {
+
+            obj.style.display = 'block';
+
+        }
+
+    }
+
+    var sh = document.getElementById("showHidden");
+
+    sh.onclick = function() {
+
+        var div1 = document.getElementById("div1");
+
+        var div2 = document.getElementById("div2");
+
+        show_hidden(div1);
+
+        show_hidden(div2);
+
+        return false;
+
+    }
+
+
+    var sl = document.getElementById("showHidden2");
+    sl.onclick = function() {
+
+        var div1 = document.getElementById("div1");
+
+        var div2 = document.getElementById("div2");
+
+        show_hidden(div1);
+
+        show_hidden(div2);
+
+        return false;
+
+    }
 
 
 
-<div    class="aui-ver-form"  style="background-image: url(${rc.contextPath}/static/images/duihuan.jpg) ;background-size: 100% 100%;width:100%;height:620px;position:relative;box-sizing:border-box;overflow: hidden;background-repeat: no-repeat
-;display: none" >
-
-</div>
-
+</script>
 <script type="text/javascript">
 
 
@@ -149,34 +210,51 @@ body {
                 $("#msgContent").html(html);  //在html页面id=msgContent的标签里显示html内容
 
                 //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完
- /*               if(flg === "0"){
-                    alert("领取成功,您的优惠码为："+msgContent)
-                }
-                if(flg === '1'){
-                    alert(msgContent)
-                }
-                if(flg === '2'){
-                    alert(msgContent)
-                }
-                if(flg === '3'){
-                    alert(msgContent)
-                }
-                if(flg === '4'){
-                    alert(msgContent)
-                }
-                if(flg === '5'){
-                    alert(msgContent)
-                }
-                if(flg === '-1'){
-                    alert(msgContent)
-                }
-*/
+                /*               if(flg === "0"){
+                                   alert("领取成功,您的优惠码为："+msgContent)
+                               }
+                               if(flg === '1'){
+                                   alert(msgContent)
+                               }
+                               if(flg === '2'){
+                                   alert(msgContent)
+                               }
+                               if(flg === '3'){
+                                   alert(msgContent)
+                               }
+                               if(flg === '4'){
+                                   alert(msgContent)
+                               }
+                               if(flg === '5'){
+                                   alert(msgContent)
+                               }
+                               if(flg === '-1'){
+                                   alert(msgContent)
+                               }
+               */
             }
         })
 
     })
 
+
+
+    /*$(document).ready(function(){
+        //屏幕当前的高度
+        var oHeight = $(window).height();
+        $(window).resize(function(){
+            if($(window).height() < oHeight){
+                $("#btn-selectType").css("top","75px");
+            }else{
+                $("#btn-selectType").css("top","");
+            }
+        });
+    });
+*/
+
 </script>
+
+
 </body>
-</body>
+
 </html>
