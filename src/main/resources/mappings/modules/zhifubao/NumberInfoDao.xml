@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.zhifubao.dao.NumberInfoDao">
+
+    <sql id="countColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.phone_number AS "phoneNumber",
+		a.pspt_id AS "psptId",
+		a.order_time AS "orderTime"
+	</sql>
+
+    <sql id="countJoins">
+    </sql>
+
+
+
+
+
+    <insert id="insert">
+		INSERT INTO zhifubao(
+            id ,
+            user_id ,
+            phone_number ,
+            pspt_id ,
+            order_time
+		) VALUES (
+			#{id},
+			#{userId},
+			#{phoneNumber},
+			#{psptId},
+			#{orderTime}
+		)
+	</insert>
+
+	<select id="getEnty" resultType="NumberInfo">
+		select *  from zhifubao
+
+	</select>
+
+
+</mapper>

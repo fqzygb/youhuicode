@@ -11,6 +11,8 @@ import com.thinkgem.jeesite.modules.click.service.ClickTimeService;
 import com.thinkgem.jeesite.modules.code.entity.Code;
 import com.thinkgem.jeesite.modules.code.service.CodeService;
 import com.thinkgem.jeesite.modules.youhuicode.entity.Msg;
+import com.thinkgem.jeesite.modules.zhifubao.alipayConfig.AlipayConfig;
+import com.thinkgem.jeesite.modules.zhifubao.alipayConfig.AlipaySubmit;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,9 +30,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.youhuicode.entity.UserInfo;
 import com.thinkgem.jeesite.modules.youhuicode.service.UserInfoService;
 
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 /**
  * 优惠码Controller
@@ -252,6 +253,55 @@ public class UserInfoController extends BaseController {
             return msg;
         }
 
+	}
+
+
+
+
+
+
+	/**
+	 *  跳转到授权界面
+	 */
+	@RequestMapping(value = "zhifubao")
+	public String save(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		Map<String,String> maps = new HashMap<String ,String>();
+		//页面回调地址 必须与应用中的设置一样
+		String returnUrl = "http://10.116.204.80:8080/jeesite_war/a/youhuicode/userInfo/zhifubao/imf";
+
+		//回调地址必须经encode
+		returnUrl = java.net.URLEncoder.encode(returnUrl,"UTF-8");
+
+		//重定向到授权页面
+		return "redirect:"+ AlipayConfig.ALIPAY_URL+"?app_id=" + AlipayConfig.APP_ID + "&scope=auth_user&redirect_uri=" + returnUrl;
+	}
+
+
+	/**
+	 * 获取用户信息
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value = "zhifubao/imf")
+	public void returnImf(HttpServletRequest request, HttpServletResponse response) {
+		//获取支付宝GET过来反馈信息
+		Map<String,String> params = new HashMap<String,String>();
+		Map requestParams = request.getParameterMap();
+		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+			String name = (String) iter.next();
+			String[] values = (String[]) requestParams.get(name);
+			String valueStr = "";
+			for (int i = 0; i < values.length; i++) {
+				valueStr = (i == (values.length-1)) ? valueStr + values[i]:valueStr + values[i] + ",";
+			}
+			params.put(name, valueStr);
+		}
+
+		String accessToken= AlipaySubmit.buildRequest(params);
+		if(accessToken!=null && accessToken!=""){
+			String imf  =  AlipaySubmit.get(accessToken);
+			System.out.println(imf);
+		}
 	}
 
 

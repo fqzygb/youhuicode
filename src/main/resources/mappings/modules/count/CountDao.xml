@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.urlcount.dao.CountDao">
+
+    <sql id="countColumns">
+		a.id AS "id",
+		a.ip_address AS "ipAddress",
+		a.ip_url AS "ipUrl",
+		a.insert_time AS "insertTime",
+		a.remarks AS "reMarks"
+
+
+	</sql>
+
+    <sql id="countJoins">
+    </sql>
+
+
+    <select id="getCountByUrl" resultType="Integer">
+		select   count(distinct ip_address)    from url_count
+		 where ip_url = #{ipUrl}
+	</select>
+
+
+
+    <insert id="insert">
+		INSERT INTO url_count(
+			id,
+			ip_address,
+			ip_url,
+			insert_time,
+			remarks
+		) VALUES (
+			#{id},
+			#{ipAddress},
+			#{ipUrl},
+			#{insertTime},
+			#{reMarks}
+		)
+	</insert>
+
+
+
+
+</mapper>

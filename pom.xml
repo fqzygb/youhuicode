@@ -676,6 +676,24 @@
 			</exclusions>
 		</dependency> -->
 
+
+		<!--支付宝-->
+
+		<!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+		<dependency>
+			<groupId>com.alipay.sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>4.9.124.ALL</version>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>0.9</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
