@@ -1,6 +1,8 @@
 package com.thinkgem.jeesite.modules.zhifubao.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
 
 import java.util.Date;
 
@@ -9,7 +11,8 @@ public class NumberInfo extends DataEntity<NumberInfo> {
     private String userId;//支付宝user_id
     private String phoneNumber;
     private String psptId;
-    private Date orderTime;
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String orderTime;
 
     public String getId() {
         return id;
@@ -43,11 +46,12 @@ public class NumberInfo extends DataEntity<NumberInfo> {
         this.psptId = psptId;
     }
 
-    public Date getOrderTime() {
+
+    public String getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(Date orderTime) {
+    public void setOrderTime(String orderTime) {
         this.orderTime = orderTime;
     }
 }

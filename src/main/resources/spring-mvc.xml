@@ -143,6 +143,15 @@
 
 			<bean class="com.thinkgem.jeesite.modules.youhuicode.interceptor.UserInterceptor"></bean>
 		</mvc:interceptor>
+
+
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/jeesite_war/toencryptByTime*"/>-->
+
+<!--		&lt;!&ndash;	<mvc:mapping path="/jeesite_war/getMessage"/>-->
+<!--&ndash;&gt;-->
+<!--			<bean class="com.thinkgem.jeesite.modules.zhifubao.interceptor.AuthenticationInterceptor"></bean>-->
+<!--		</mvc:interceptor>-->
 		<!-- 手机视图拦截器 -->
 		<!--<mvc:interceptor>
 			<mvc:mapping path="/**" />

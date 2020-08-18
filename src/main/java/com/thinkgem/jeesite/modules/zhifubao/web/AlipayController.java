@@ -1,25 +1,18 @@
 package com.thinkgem.jeesite.modules.zhifubao.web;
 
-
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.modules.youhuicode.entity.Msg;
 import com.thinkgem.jeesite.modules.zhifubao.alipayConfig.AlipayConfig;
 import com.thinkgem.jeesite.modules.zhifubao.alipayConfig.AlipaySubmit;
 import com.thinkgem.jeesite.modules.zhifubao.entity.NumberInfo;
 import com.thinkgem.jeesite.modules.zhifubao.service.NumberInfoService;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,8 +22,7 @@ public class AlipayController {
     @Autowired
     private NumberInfoService numberInfoService;
 
-
-
+    private Integer flag = 0;
 
     /**
      *  跳转到授权界面
@@ -113,23 +105,17 @@ public class AlipayController {
             String imf  =  AlipaySubmit.get(accessToken);
             System.out.println(imf);
             model.addAttribute("userId", imf);
-//            String imf  =  AlipaySubmit.get(accessToken);
-//            String imf1 =imf.substring(200,227);
-//            String imf2 =imf.substring(210,226);
-//            // imf.alipay_user_info_share_response.user_id;
-//            System.out.println("------------------------------------------------");
-//            System.out.println("aaaaaaa:"+imf);
-//            System.out.println(imf1);
-//            System.out.println("user_id:"+imf2);
-//            System.out.println("------------------------------------------------");
         }
-        return "modules/zhifubao/numberInfo.html";
+       //return "modules/zhifubao/numberInfo.html";
+        return "modules/zhifubao/index.html";
     }
 
 
     @RequestMapping(value = "getNumberInfo")
     public  String getNumberInfo(){
-       return "modules/zhifubao/numberInfo.html";
+
+        //return "modules/zhifubao/numberInfo.html";
+        return "modules/zhifubao/index.html";
     }
 
 
@@ -138,58 +124,42 @@ public class AlipayController {
      */
     @RequestMapping(value = "insertNumberInfo")
     @ResponseBody
-    public Msg insertNumberInfo(String userId,String phoneNumber,String psptId){
-        Msg msg = null;
+    public Msg insertNumberInfo(String userId,String phoneNumber,String psptId,HttpServletResponse httpServletResponse){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        System.out.println("userId = " + userId);
+        System.out.println("phoneNumber = " + phoneNumber);
+        System.out.println("psptId = " + psptId);
+        Msg msg  = new Msg();
+
+    if(userId != null && phoneNumber != null && psptId != null) {
         try {
-            msg = new Msg();
+
             NumberInfo numberInfo = new NumberInfo();
             numberInfo.setUserId(userId);
             numberInfo.setPhoneNumber(phoneNumber);
             numberInfo.setPsptId(psptId);
-            numberInfo.setOrderTime(new Date());
+            Date orderTime = new Date();
+            String format = simpleDateFormat.format(orderTime);
+            numberInfo.setOrderTime(format);
             numberInfoService.insert(numberInfo);
             msg.setFlg("1");
-            msg.setMsgContent("提交成功："+numberInfo.getPhoneNumber());
+            msg.setMsgContent("提交成功：" + numberInfo.getPhoneNumber());
             return msg;
-        }catch(Exception e){
-            msg.setFlg("-1");
-            msg.setMsgContent("网络异常，请您稍后重试");
-            return msg;
-        }
-    }
-
-    /*
-    获取数据库数据（list）转换成json格式
-     */
-    @RequestMapping(value = "toJSONArray")
-    public JSONArray toJSONArray() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
-
-        try {
-            List<NumberInfo> numberInfoLists= numberInfoService.getEntity();//获取List
-            if(null == numberInfoLists){
-                return null;
-            }
-            JSONArray jsonArray = new JSONArray();
-            for(NumberInfo numberInfoList : numberInfoLists){
-                JSONObject jo = new JSONObject();
-                jo.put("id", numberInfoList.getId());
-                jo.put("userId", numberInfoList.getUserId());
-                jo.put("psptId", numberInfoList.getPsptId());
-                jo.put("orderTime", simpleDateFormat.format(numberInfoList.getOrderTime()));
-                jsonArray.add(jo);
-
-            }
-            System.out.println(jsonArray.toString());
-            return jsonArray;
         } catch (Exception e) {
+            msg.setFlg("0");
+            msg.setMsgContent("网络异常，请您稍后重试");
 
-            e.printStackTrace();// TODO: handle exception
-            return null;
+            return msg;
         }
-
+    }else {
+        msg.setFlg("2");
+        msg.setMsgContent("请正确输入信息");
+        return msg;
 
     }
+    }
+
+
 
 
 

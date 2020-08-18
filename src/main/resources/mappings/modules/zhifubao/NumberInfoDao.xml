@@ -14,9 +14,6 @@
     </sql>
 
 
-
-
-
     <insert id="insert">
 		INSERT INTO zhifubao(
             id ,
@@ -35,6 +32,23 @@
 
 	<select id="getEnty" resultType="NumberInfo">
 		select *  from zhifubao
+
+	</select>
+
+	<select id="getEntyByTime" resultType="NumberInfo">
+		select *  FROM zhifubao
+		where
+		DATE_FORMAT(#{orderTime},'%Y-%m-%d') = DATE_FORMAT(order_time,'%Y-%m-%d')
+		<if test="flag == '上午' || flag == 'AM'">
+		AND
+		/*上午的数据*/
+		DATE_FORMAT(order_time,'%H')&lt;'12'
+		</if>
+		<if test="flag == '下午' || flag == 'PM'">
+		AND
+		/*下午的数据*/
+		DATE_FORMAT(order_time,'%H')>='12'
+		</if>
 
 	</select>
 

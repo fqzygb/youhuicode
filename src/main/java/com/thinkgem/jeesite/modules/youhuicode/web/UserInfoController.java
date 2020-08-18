@@ -139,17 +139,6 @@ public class UserInfoController extends BaseController {
 	@ResponseBody     //返回的不是页面，而是一个对象
 	public Msg code(String serial_number,String pspt_id,Model model) {
 
-		//由controller来调用service
-		//controller层主要是核心控制层，用来控制请求的。
-
-		//service层进行处理业务逻辑
-		//在service层中，加入业务逻辑，判断。
-		//dao层主要是用来操作数据库的
-		//然在controller调用service。
-
-
-
-
 		/**
 		 * 1、先去数据库判断这个用户是否存在
 		 *
@@ -165,7 +154,6 @@ public class UserInfoController extends BaseController {
             msg = new Msg();
             Random random = new Random();
             //String string = random.toString();
-
 
 			ClickTime clickTime = new ClickTime();
 			String id = UUID.randomUUID().toString();
