@@ -14,12 +14,7 @@
 	<bean name="shiroFilterChainDefinitions" class="java.lang.String">
 		<constructor-arg>
 			<value>
-				<!--那个${adminPath} 的本质就是个a
-					明白？没有
-					就是昨晚我们配的那个路径，spring-MVC 那里？懂了吗
-					OK
 
-				-->
 				/static/** = anon
 				/userfiles/** = anon
 				${adminPath}/cas = cas

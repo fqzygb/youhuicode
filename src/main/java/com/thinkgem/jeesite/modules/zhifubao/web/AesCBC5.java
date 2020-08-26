@@ -55,7 +55,7 @@ public class AesCBC5 {
 //        String encryptedString = encrypt(originalString);
 //        System.out.println("Encrypted String - " + encryptedString);
 //        String decryptedString = decrypt(encryptedString);
-        String decryptedString = decrypt("DSBqjEL9QTroTKx3IeESS3tlF/iyIsYdI3xew4cqfWh7ytJ8zwoBy6CzJfSSS3A6CR1qRWg4p1lE4x5am3+i3XpUY+ApXUVAllwz2qvW63nSUGySvTZXXyA7jPpYiycFMav6AfVRMdbaNTRH6ESPDPrXTD9UAkLsvF2GxYeOVBdpm091a1WSCtUu8VfAKJWF1S7FMNzjQNhz3Bqh5VLSYs61SSwZCsG+/DW91GzVaIC1TllYH45j40DGZHaM1FTX5Jn/4sZUpeQBT0mjAfYKxR5tKkZVhstUw7BVcj9LLZbPw/26SNjTlgi/e3gxpmFoCCO1vVT8UC183ior6MMKyZ5mjRQuIBpUN4VzZSVvycCiPVKKwDxMfcI1pXbsIaCEbOSAODhdbe0GtDC6Fql5YNgKj3SSIJ1hb1HuEAb1pVjiGWP4ZFLxrH4iMDFZFcUXm909BWqMgU7M2ongTgBMCsmlrhquYsmQV1vDZBCbbwouxQmTDfb55o2FxH4QBKCZtmyegjp7XKJwYhwaHgr2OqRHocuC4QcXbcXbWdUMoW4WcsDtZqaqdgRnLkKnh5E9HwYheC3Pu/aYlcI4Xo5L/A==");
+        String decryptedString = decrypt("ZNK31rzqTWlm3RN6xJMEqsPnwMRgytLTB2+GXjRoGfOUKSntX5//1qiSlL5nRpcHQ4BZdf/2da29u59wSaXUKw8Zw2tJcvtwzDRaQuhS5IQ=");
         System.out.println("After decryption - " + decryptedString);
     }
 

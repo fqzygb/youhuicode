@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,13 +33,13 @@ public class AlipayController {
     public String save(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         Map<String,String> maps = new HashMap<String ,String>();
         //页面回调地址 必须与应用中的设置一样
-        System.out.println("开始");
+        //System.out.println("开始");
         //String return_url = "http://10.116.204.80:8080/jeesite_war/imf";
         String return_url = "http://10.116.204.80:8080/jeesite_war/touserInfo";
 
         //回调地址必须经encode
         return_url = java.net.URLEncoder.encode(return_url,"UTF-8");
-        System.out.println("成功");
+      //  System.out.println("成功");
         //重定向到授权页面
 //        https://openauth.alipay.com/oauth2/publicAppAuthorize.htm
        // &scope=auth_user
@@ -103,32 +105,34 @@ public class AlipayController {
         String accessToken = AlipaySubmit.buildRequest(params);
         if (accessToken != null && accessToken != "") {
             String imf  =  AlipaySubmit.get(accessToken);
-            System.out.println(imf);
+           // System.out.println(imf);//支付宝传过来的user_id
             model.addAttribute("userId", imf);
         }
-       //return "modules/zhifubao/numberInfo.html";
-        return "modules/zhifubao/index.html";
+       return "modules/zhifubao/numberInfo.html";
+      //  return "modules/zhifubao/index.html";
     }
 
 
     @RequestMapping(value = "getNumberInfo")
     public  String getNumberInfo(){
 
-        //return "modules/zhifubao/numberInfo.html";
-        return "modules/zhifubao/index.html";
+        return "modules/zhifubao/numberInfo.html";
+      // return "modules/zhifubao/index.html";
     }
 
 
     /*
     保存页面信息到数据库
      */
-    @RequestMapping(value = "insertNumberInfo")
+    @RequestMapping(value = "insertNumberInfo",method = RequestMethod.POST)
     @ResponseBody
-    public Msg insertNumberInfo(String userId,String phoneNumber,String psptId,HttpServletResponse httpServletResponse){
+    public Msg insertNumberInfo(@RequestParam(value = "userId") String userId, @RequestParam(value ="phoneNumber" ) String phoneNumber, @RequestParam(value = "psptId") String psptId, HttpServletResponse httpServletResponse,HttpServletRequest httpServletRequest){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String submitTime = httpServletRequest.getParameter("userId");
         System.out.println("userId = " + userId);
         System.out.println("phoneNumber = " + phoneNumber);
         System.out.println("psptId = " + psptId);
+        System.out.println("submitTime = " + submitTime);
         Msg msg  = new Msg();
 
     if(userId != null && phoneNumber != null && psptId != null) {
@@ -148,7 +152,6 @@ public class AlipayController {
         } catch (Exception e) {
             msg.setFlg("0");
             msg.setMsgContent("网络异常，请您稍后重试");
-
             return msg;
         }
     }else {

@@ -1,140 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>江门联通丨支付宝</title>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
-    <title>下单</title>
-    <script src="${rc.contextPath}/static/jquery/jquery-1.8.3.js"></script>
-    <style>
-        body{
-            padding: 0;
-            margin: 0;
-            overflow-x:hidden;
-            overflow-y: hidden;
-            width:100%;
-            min-height: 100%;
-        }
-
-    </style>
-
-</head>
+<link rel="stylesheet" href="${rc.contextPath}/static/css/style.css">
 <body>
 
+<div class="login-container">
+    <h1>ShareLink</h1>
 
+    <div class="connect">
+        <p>Link the world. Share to world.</p>
+    </div>
 
-
-
-<div style="position: relative">
-    <input id="userId" type="hidden" value="${userId}">
-    <div class="control-group">
-        <div class="aui-flex-box" style="position: absolute ;top:50px" >
-            <label class="control-label" style="color: white;font-size: larger"><b>手机号码：</b></label>
-            <input id="phoneNumber" type="text" autocomplete="off" placeholder="112211激活的联通手机号码" />
+    <form action="${rc.contextPath}/insertNumberInfo" method="post" id="loginForm">
+        <div>
+            <input type="hidden" id="userId" name="userId" class="userId" value="${userId}" />
         </div>
-    </div>
-
-    <div class="control-group">
-    <div class="aui-flex-box" style="position: absolute;top:100px">
-            <label class="control-label" style="color: white;font-size: larger"><b>证件号码：</b></label>
-            <input id="psptId" type="text" autocomplete="off" placeholder="开户身份证号码"  />
+        <div>
+            <input type="text" id="phoneNumber" name="phoneNumber" class="phoneNumber" placeholder="激活的联通手机号码" autocomplete="off"/>
         </div>
-    </div>
+        <div>
+            <input type="text" id="psptId" name="psptId" class="psptId" placeholder="开户身份证号码" autocomplete="off" />
+        </div>
+        <button id="submit" type="submit">提交</button>
+    </form>
 
-    <div class="control-group">
-    <div class="aui-ver-button" style="position:absolute;top: 120px ">
-        <button id="btn" style="color:green;text-align:center;width: 60px;height: 30px ">提交</button>
-    </div>
-    </div>
-
-
-<div style="position: absolute;top: 200px">${userId}</div>
 
 </div>
 
+</body>
+<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="${rc.contextPath}/static/js/common.js"></script>
+<!--背景图片自动更换-->
+<script src="${rc.contextPath}/static/js/supersized.3.2.7.min.js"></script>
+<script src="${rc.contextPath}/static/js/supersized-init.js"></script>
+<!--表单验证-->
+<script src="${rc.contextPath}/static/js/jquery.validate.min.js?var1.14.0"></script>
 
+
+
+<script type="text/javascript" src="${rc.contextPath}/static/js/jquery.form.js"></script>
 <script type="text/javascript">
+    $(function () {
 
-    $("#btn").click(function () {
-        var phoneNumber = $("#phoneNumber").val();
-        var psptId = $("#psptId").val();
-        var userId = $("#userId").val();
-
-        var red =/^[1][3|4|5|6|7|8|9][0-9]{9}$/;
-        var reg =/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
-
-        if((phoneNumber || psptId) ===null || (phoneNumber || psptId) ==='' ){
-            return false
-        }else {
-
-            if (!red.test(phoneNumber)) {
-                alert("手机号码有误，请重填");
-                return false;
-            }
-            if (!reg.test(psptId)) {
-                alert("18位身份证号码有误，请重填");
-                return false;
-            }
-        }
-
-        $.ajax({
-            type:"POST",
-            dateType:"JSON",
-            url:"${rc.contextPath}/insertNumberInfo",
-            data:{
-                "userId":userId,
-                "phoneNumber":phoneNumber,
-                "psptId":psptId,
-                //"type":type
-            },
-            //contentType: "application/json;charset=UTF-8",
-            success:function(data){
-                //这里的data，就是重后台传来的那个对象，根据这个对象的那个flg，就能判断到底是哪种情况了
-                console.log(data);
-                var flg =  data.flg;
-                var msgContent = data.msgContent;
-                console.log(flg);
-                console.log(msgContent);
-                //拿到了那个状态值和那个码了，然后根据那个状态值，去判断，根据不同的状态给出不同的提示。
-
-
-
-
-
-                //flg :0 未领取，1 已领取 ，2 用户信息有误  ，3 活动未开始 ， 4活动已结束 ，5 码已领完
-                /*               if(flg === "0"){
-                                   alert("领取成功,您的优惠码为："+msgContent)
-                               }
-                               if(flg === '1'){
-                                   alert(msgContent)
-                               }
-                               if(flg === '2'){
-                                   alert(msgContent)
-                               }
-                               if(flg === '3'){
-                                   alert(msgContent)
-                               }
-                               if(flg === '4'){
-                                   alert(msgContent)
-                               }
-                               if(flg === '5'){
-                                   alert(msgContent)
-                               }
-                               if(flg === '-1'){
-                                   alert(msgContent)
-                               }
-               */
-            }
-        })
-
-    })
-
-
-
+        $("#submit").click(function () {
+            $("#loginForm").ajaxSubmit(function (message) {
+                console.log(message);
+                alert("提交成功");
+            });
+            return false;
+        });
+    });
 
 </script>
-
-
-</body>
 
 </html>
