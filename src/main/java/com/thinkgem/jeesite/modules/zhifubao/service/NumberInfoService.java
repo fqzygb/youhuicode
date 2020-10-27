@@ -21,6 +21,7 @@ public class NumberInfoService extends CrudService<NumberInfoDao, NumberInfo> {
     public int insert(NumberInfo numberInfo){
         return numberInfoDao.insert(numberInfo);
     }
+    public List<NumberInfo> findByAll(NumberInfo numberInfo){return numberInfoDao.findByAll(numberInfo);}//判断信息是否重复提交
 
     public List<NumberInfo> getEntity() {
         return numberInfoDao.getEnty();

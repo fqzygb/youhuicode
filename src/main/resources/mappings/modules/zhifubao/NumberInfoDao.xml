@@ -53,4 +53,16 @@
 	</select>
 
 
+	<select id="findByAll" resultType="NumberInfo">
+     select user_id , phone_number , pspt_id from zhifubao
+     where
+     user_id = #{userId}
+     and
+     phone_number =#{phoneNumber}
+     and
+     pspt_id =#{psptId}
+
+	</select>
+
+
 </mapper>

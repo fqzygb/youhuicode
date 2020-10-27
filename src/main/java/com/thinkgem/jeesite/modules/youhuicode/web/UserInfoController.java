@@ -255,7 +255,9 @@ public class UserInfoController extends BaseController {
 	public String save(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		Map<String,String> maps = new HashMap<String ,String>();
 		//页面回调地址 必须与应用中的设置一样
-		String returnUrl = "http://10.116.204.80:8080/jeesite_war/a/youhuicode/userInfo/zhifubao/imf";
+		//String returnUrl = "http://10.116.204.80:8080/jeesite_war/a/youhuicode/userInfo/zhifubao/imf";
+		String returnUrl = "http://129.204.135.23:8080/jeesite/a/youhuicode/userInfo/zhifubao/imf";
+
 
 		//回调地址必须经encode
 		returnUrl = java.net.URLEncoder.encode(returnUrl,"UTF-8");

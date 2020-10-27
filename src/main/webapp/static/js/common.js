@@ -11,11 +11,11 @@ $(document).ready(function(){
 			phoneNumber:{
 				required:true,//必填
 				minlength:11, //最少6个字符
-				maxlength:11,//最多20个字符
+				maxlength:11,//最多11个字符
 			},
 			psptId:{
 				required:true,
-				minlength:18,
+				minlength:18,//
 				maxlength:18,
 			},
 		},
@@ -29,19 +29,20 @@ $(document).ready(function(){
 			},
 			psptId:{
 				required:"必须填写开户身份证号码",
-				minlength:"身份证号码为18位",
-				maxlength:"身份证号码为18位",
+				minlength:"请填写18位身份证号码",
+				maxlength:"请填写18身份证号码",
 			},
 		},
 
 	});
 
-	//添加自定义验证规则
+	//添加自定义验证规则,就是在表单之外添加验证规则
 	jQuery.validator.addMethod("phoneNumber", function(value, element) {
 		var length = value.length;
 		var phoneNumber = /^[1][3|4|5|6|7|8|9][0-9]{9}$/;
 		return this.optional(element) || (length == 11 && phoneNumber.test(value));
 	}, "手机号码格式错误");
+
 
 	jQuery.validator.addMethod("psptId", function(value, element) {
 		var length = value.length;

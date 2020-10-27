@@ -35,7 +35,8 @@ public class AlipayController {
         //页面回调地址 必须与应用中的设置一样
         //System.out.println("开始");
         //String return_url = "http://10.116.204.80:8080/jeesite_war/imf";
-        String return_url = "http://10.116.204.80:8080/jeesite_war/touserInfo";
+        //String return_url = "http://10.116.204.80:8080/jeesite_war/touserInfo";
+        String return_url = "http://129.204.135.23:8080/jeesite/touserInfo";
 
         //回调地址必须经encode
         return_url = java.net.URLEncoder.encode(return_url,"UTF-8");
@@ -128,14 +129,28 @@ public class AlipayController {
     @ResponseBody
     public Msg insertNumberInfo(@RequestParam(value = "userId") String userId, @RequestParam(value ="phoneNumber" ) String phoneNumber, @RequestParam(value = "psptId") String psptId, HttpServletResponse httpServletResponse,HttpServletRequest httpServletRequest){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String submitTime = httpServletRequest.getParameter("userId");
+        //String submitTime = httpServletRequest.getParameter("userId");
         System.out.println("userId = " + userId);
         System.out.println("phoneNumber = " + phoneNumber);
         System.out.println("psptId = " + psptId);
-        System.out.println("submitTime = " + submitTime);
+       // System.out.println("submitTime = " + submitTime);
         Msg msg  = new Msg();
 
     if(userId != null && phoneNumber != null && psptId != null) {
+        if (userId=="${userId}" ||userId.equals("${userId}" )||"".equals(userId)){
+            msg.setFlg("4");
+            msg.setMsgContent("请退出，重新授权");
+            return msg;
+
+        }
+
+        if ("".equals(phoneNumber)||"".equals(psptId) ){
+            msg.setFlg("2");
+            msg.setMsgContent("请正确输入信息");
+            return msg;
+        }
+
+
         try {
 
             NumberInfo numberInfo = new NumberInfo();
@@ -145,10 +160,17 @@ public class AlipayController {
             Date orderTime = new Date();
             String format = simpleDateFormat.format(orderTime);
             numberInfo.setOrderTime(format);
-            numberInfoService.insert(numberInfo);
-            msg.setFlg("1");
-            msg.setMsgContent("提交成功：" + numberInfo.getPhoneNumber());
-            return msg;
+            if (numberInfoService.findByAll(numberInfo)==null ||numberInfoService.findByAll(numberInfo).size()<=0){
+                numberInfoService.insert(numberInfo);
+                msg.setFlg("1");
+                msg.setMsgContent("您的信息我们已收到！我们会对您的信息进行审查，审查完成后我们将于次日早上十点后将江门28元公交乘车券发放至您的支付宝卡包，请及时领取");
+                return msg;
+
+            }else {
+                msg.setFlg("3");
+                msg.setMsgContent("不允许重复提交");
+                return msg;
+            }
         } catch (Exception e) {
             msg.setFlg("0");
             msg.setMsgContent("网络异常，请您稍后重试");

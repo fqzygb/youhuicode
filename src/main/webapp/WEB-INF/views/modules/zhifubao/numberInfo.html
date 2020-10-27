@@ -6,11 +6,16 @@
 <link rel="stylesheet" href="${rc.contextPath}/static/css/style.css">
 <body>
 
+<style type="text/css">
+    .pstyle{font-size:25px}
+</style
+
 <div class="login-container">
-    <h1>ShareLink</h1>
+    <h1>开通联通大王卡</h1>
 
     <div class="connect">
-        <p>Link the world. Share to world.</p>
+        <p class="pstyle"> 江门公交免费乘</p>
+
     </div>
 
     <form action="${rc.contextPath}/insertNumberInfo" method="post" id="loginForm">
@@ -21,10 +26,12 @@
             <input type="text" id="phoneNumber" name="phoneNumber" class="phoneNumber" placeholder="激活的联通手机号码" autocomplete="off"/>
         </div>
         <div>
-            <input type="text" id="psptId" name="psptId" class="psptId" placeholder="开户身份证号码" autocomplete="off" />
+            <input type="text" id="psptId" name="psptId" class="psptId" placeholder="身份证后六位" autocomplete="off" />
         </div>
         <button id="submit" type="submit">提交</button>
     </form>
+
+
 
 
 </div>
@@ -47,7 +54,39 @@
         $("#submit").click(function () {
             $("#loginForm").ajaxSubmit(function (message) {
                 console.log(message);
-                alert("提交成功");
+                var flag = message.flg;
+                var msgContent = message.msgContent;
+                if (flag ==="0"){
+                    alert(msgContent);
+                    $("#phoneNumber").val("");
+                    $("#psptId").val("");
+
+                }
+                if (flag ==="1"){
+                    alert(msgContent);
+                    $("#phoneNumber").val("");
+                    $("#psptId").val("");
+
+                }
+                if (flag ==="2"){
+                    alert(msgContent);
+                    $("#phoneNumber").val("");
+                    $("#psptId").val("");
+
+                }
+                if (flag ==="3"){
+                    alert(msgContent);
+                    $("#phoneNumber").val("");
+                    $("#psptId").val("");
+
+                }
+                if (flag ==="4"){
+                    alert(msgContent);
+                    $("#phoneNumber").val("");
+                    $("#psptId").val("");
+
+                }
+
             });
             return false;
         });

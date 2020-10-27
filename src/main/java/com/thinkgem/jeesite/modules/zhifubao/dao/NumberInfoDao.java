@@ -11,7 +11,7 @@ import java.util.List;
 public interface NumberInfoDao extends CrudDao<NumberInfo> {
 
     int insert(NumberInfo numberInfo) ;
+    List<NumberInfo> findByAll(NumberInfo numberInfo);
     List<NumberInfo> getEnty();
-
     List<NumberInfo> getEntyByTime(HashMap map);
 }
