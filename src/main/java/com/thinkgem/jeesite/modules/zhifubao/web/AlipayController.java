@@ -29,7 +29,7 @@ public class AlipayController {
     /**
      *  跳转到授权界面
      */
-    @RequestMapping(value = "zhifubao")
+    @RequestMapping(value = "sdgsdrhtrj")
     public String save(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         Map<String,String> maps = new HashMap<String ,String>();
         //页面回调地址 必须与应用中的设置一样
@@ -37,7 +37,7 @@ public class AlipayController {
         //String return_url = "http://10.116.204.80:8080/jeesite_war/imf";
         //String return_url = "http://10.116.204.80:8080/jeesite_war/touserInfo";
        // String return_url = "http://129.204.135.23:8080/jeesite/touserInfo";
-        String return_url = "http://106.52.247.226:8080/jeesite/touserInfo";
+        String return_url = "http://106.52.247.226:8080/adhjeklv/touserInfo";
 
 
         //回调地址必须经encode
