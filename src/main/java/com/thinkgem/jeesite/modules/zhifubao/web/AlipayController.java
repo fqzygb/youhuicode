@@ -36,7 +36,9 @@ public class AlipayController {
         //System.out.println("开始");
         //String return_url = "http://10.116.204.80:8080/jeesite_war/imf";
         //String return_url = "http://10.116.204.80:8080/jeesite_war/touserInfo";
-        String return_url = "http://129.204.135.23:8080/jeesite/touserInfo";
+       // String return_url = "http://129.204.135.23:8080/jeesite/touserInfo";
+        String return_url = "http://106.52.247.226:8080/jeesite/touserInfo";
+
 
         //回调地址必须经encode
         return_url = java.net.URLEncoder.encode(return_url,"UTF-8");
@@ -128,6 +130,7 @@ public class AlipayController {
     @RequestMapping(value = "insertNumberInfo",method = RequestMethod.POST)
     @ResponseBody
     public Msg insertNumberInfo(@RequestParam(value = "userId") String userId, @RequestParam(value ="phoneNumber" ) String phoneNumber, @RequestParam(value = "psptId") String psptId, HttpServletResponse httpServletResponse,HttpServletRequest httpServletRequest){
+      // httpServletRequest.getRemoteAddr();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         //String submitTime = httpServletRequest.getParameter("userId");
         System.out.println("userId = " + userId);
@@ -163,7 +166,7 @@ public class AlipayController {
             if (numberInfoService.findByAll(numberInfo)==null ||numberInfoService.findByAll(numberInfo).size()<=0){
                 numberInfoService.insert(numberInfo);
                 msg.setFlg("1");
-                msg.setMsgContent("您的信息我们已收到！我们会对您的信息进行审查，审查完成后我们将于次日早上十点后将江门28元公交乘车券发放至您的支付宝卡包，请及时领取");
+                msg.setMsgContent("您的信息我们已收到！我们会对您的信息进行校验，审查完成后我们将于次日早上十一点后将江门28元公交乘车券发放至您的支付宝卡包，请及时领取");
                 return msg;
 
             }else {
